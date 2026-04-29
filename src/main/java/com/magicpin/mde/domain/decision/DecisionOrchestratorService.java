@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class DecisionOrchestratorService {
+
   private final ContextStoreService contextStoreService;
   private final ObjectMapper objectMapper;
   private final DecisionEngineService decisionEngineService;
@@ -25,6 +26,7 @@ public class DecisionOrchestratorService {
 
   public TickResponse tick(String merchantId) {
     var ctxEntity = contextStoreService.getRequired(merchantId);
+
     ContextUpsertRequest ctx;
 
     try {
@@ -39,33 +41,57 @@ public class DecisionOrchestratorService {
       );
     }
 
-    MessageStrategy strategy = decisionEngineService.decideProactive(ctx);
-    String msg = llmMessageService.render(strategy, ctx);
+    MessageStrategy strategy =
+            decisionEngineService.decideProactive(ctx);
+
+    String msg =
+            llmMessageService.render(strategy, ctx);
 
     return TickResponse.builder()
-        .merchantId(merchantId)
-        .contextVersion(ctxEntity.getVersion())
-        .strategy(strategy)
-        .message(msg)
-        .build();
+            .merchantId(merchantId)
+            .contextVersion(ctxEntity.getVersion())
+            .strategy(strategy)
+            .message(msg)
+            .build();
   }
 
   public ReplyResponse reply(String merchantId, String text) {
     var ctxEntity = contextStoreService.getRequired(merchantId);
-    ContextUpsertRequest ctx = objectMapper.convertValue(ctxEntity.getPayload(), ContextUpsertRequest.class);
 
-    IntentResult intent = intentClassifier.classify(text);
-    MessageStrategy strategy = replyDecisionService.decideReply(ctx, intent);
-    String msg = llmMessageService.render(strategy, ctx);
+    ContextUpsertRequest ctx;
+
+    try {
+      ctx = objectMapper.readValue(
+              ctxEntity.getPayload(),
+              ContextUpsertRequest.class
+      );
+    } catch (Exception e) {
+      throw new RuntimeException(
+              "Failed to deserialize merchant context payload",
+              e
+      );
+    }
+
+    IntentResult intent =
+            intentClassifier.classify(text);
+
+    MessageStrategy strategy =
+            replyDecisionService.decideReply(ctx, intent);
+
+    String msg =
+            llmMessageService.render(strategy, ctx);
 
     return ReplyResponse.builder()
-        .merchantId(merchantId)
-        .contextVersion(ctxEntity.getVersion())
-        .intent(intent.intent().name())
-        .objection(intent.objection() == null ? null : intent.objection().name())
-        .strategy(strategy)
-        .message(msg)
-        .build();
+            .merchantId(merchantId)
+            .contextVersion(ctxEntity.getVersion())
+            .intent(intent.intent().name())
+            .objection(
+                    intent.objection() == null
+                            ? null
+                            : intent.objection().name()
+            )
+            .strategy(strategy)
+            .message(msg)
+            .build();
   }
 }
-
