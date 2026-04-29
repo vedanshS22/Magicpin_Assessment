@@ -169,8 +169,7 @@ public class IntentClassifier {
   private static boolean matchesAny(String s, String... tokens) {
     for (String t : tokens) {
       if (
-              s.equals(t)
-                      || s.startsWith(t + " ")
+              s.startsWith(t + " ")
                       || s.contains(" " + t + " ")
                       || s.contains(t)
       ) {
