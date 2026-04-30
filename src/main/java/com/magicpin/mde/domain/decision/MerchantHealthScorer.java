@@ -32,7 +32,7 @@ public class MerchantHealthScorer {
       return "Your conversion has dropped sharply recently (down " + (-delta) + "% week-on-week)";
     }
     if (conversion <= 18) {
-      return "Your conversion rate is currently low (" + conversion + "%), so demand isn’t turning into bookings";
+      return "Your conversion rate is currently low (" + conversion + "%), so demand is not turning into bookings";
     }
     if (bookings <= 5) {
       return "Bookings are light this week (" + bookings + " in 7 days), so we should capture demand faster";

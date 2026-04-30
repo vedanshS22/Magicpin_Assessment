@@ -70,7 +70,7 @@ public class DeterministicTemplateRenderer {
 
     if (offerPrice != null) {
       line3 =
-              "Should we launch your ₹"
+              "Should we launch your Rs "
                       + offerPrice
                       + " first-visit offer tonight?";
     } else if (discount != null) {
@@ -86,7 +86,7 @@ public class DeterministicTemplateRenderer {
     String line4 =
             (merchantName == null || merchantName.isBlank())
                     ? s.getCtaText() + " to start."
-                    : merchantName + " — " + s.getCtaText() + " to start.";
+                    : merchantName + " - " + s.getCtaText() + " to start.";
 
     return
             line1

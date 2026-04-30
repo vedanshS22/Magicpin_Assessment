@@ -38,7 +38,7 @@ public class ReplyDecisionService {
     if (intent.intent() == IntentType.AFFIRM) {
       evidence.put("journey_step", "merchant_approved");
       return base.toBuilder()
-          .triggerReason("Merchant approved — move to launch confirmation")
+          .triggerReason("Merchant approved - move to launch confirmation")
           .cta(CtaType.LAUNCH_NOW)
           .ctaText("Launch Now")
           .urgency(base.getUrgency() == Urgency.LOW ? Urgency.MEDIUM : base.getUrgency())
@@ -50,7 +50,7 @@ public class ReplyDecisionService {
     if (intent.intent() == IntentType.MORE_INFO) {
       evidence.put("journey_step", "needs_more_info");
       return base.toBuilder()
-          .triggerReason("Merchant asked for details — explain what we will send and why now")
+          .triggerReason("Merchant asked for details - explain what we will send and why now")
           .cta(CtaType.REPLY_YES)
           .ctaText("Reply YES")
           .urgency(base.getUrgency() == Urgency.CRITICAL ? Urgency.HIGH : base.getUrgency())
@@ -62,7 +62,7 @@ public class ReplyDecisionService {
     if (intent.intent() == IntentType.LATER) {
       evidence.put("journey_step", "defer_timing");
       return base.toBuilder()
-          .triggerReason("Merchant wants later — propose the next best window")
+          .triggerReason("Merchant wants later - propose the next best window")
           .cta(CtaType.START_TODAY)
           .ctaText("Start Today")
           .urgency(Urgency.MEDIUM)
@@ -76,7 +76,7 @@ public class ReplyDecisionService {
       ObjectionType obj = intent.objection();
       if (obj == ObjectionType.PRICE) {
         return base.toBuilder()
-            .triggerReason("Price objection — shift to low-risk test")
+            .triggerReason("Price objection - shift to low-risk test")
             .merchantProblem("Merchant is concerned about discount/cost; reduce risk with a smaller test")
             .cta(CtaType.APPROVE_CAMPAIGN)
             .ctaText("Approve Campaign")
@@ -87,7 +87,7 @@ public class ReplyDecisionService {
       }
       if (obj == ObjectionType.SATURATION) {
         return base.toBuilder()
-            .triggerReason("Saturation objection — run a tight segment test")
+            .triggerReason("Saturation objection - run a tight segment test")
             .merchantProblem("Merchant fears over-messaging; propose a small high-intent segment burst")
             .cta(CtaType.APPROVE_CAMPAIGN)
             .ctaText("Approve Campaign")
@@ -98,7 +98,7 @@ public class ReplyDecisionService {
       }
       if (obj == ObjectionType.TIMING) {
         return base.toBuilder()
-            .triggerReason("Timing objection — propose a better send window")
+            .triggerReason("Timing objection - propose a better send window")
             .cta(CtaType.START_TODAY)
             .ctaText("Start Today")
             .urgency(Urgency.MEDIUM)
@@ -107,7 +107,7 @@ public class ReplyDecisionService {
             .build();
       }
       return base.toBuilder()
-          .triggerReason("Merchant declined — offer a safer alternative")
+          .triggerReason("Merchant declined - offer a safer alternative")
           .cta(CtaType.START_TODAY)
           .ctaText("Start Today")
           .urgency(Urgency.LOW)
@@ -117,7 +117,7 @@ public class ReplyDecisionService {
     }
 
     return base.toBuilder()
-        .triggerReason("Unclear reply — ask a single-choice confirmation")
+        .triggerReason("Unclear reply - ask a single-choice confirmation")
         .cta(CtaType.REPLY_YES)
         .ctaText("Reply YES")
         .urgency(base.getUrgency())

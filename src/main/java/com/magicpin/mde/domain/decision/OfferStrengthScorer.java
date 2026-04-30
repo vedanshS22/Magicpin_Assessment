@@ -5,6 +5,7 @@ import com.magicpin.mde.api.dto.OfferDto;
 import com.magicpin.mde.api.dto.OfferDto.OfferType;
 import com.magicpin.mde.domain.model.Category;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -40,9 +41,9 @@ public class OfferStrengthScorer {
     int score = 0;
 
     if (o.getValidUntil() != null) {
-      long days = LocalDate.now().until(o.getValidUntil()).getDays();
-      if (days <= 1) score += 18;
-      else if (days <= 3) score += 10;
+      long days = ChronoUnit.DAYS.between(LocalDate.now(), o.getValidUntil());
+      if (days >= 0 && days <= 1) score += 18;
+      else if (days >= 0 && days <= 3) score += 10;
     }
 
     OfferType t = o.getType();
@@ -122,7 +123,7 @@ public class OfferStrengthScorer {
   }
 
   private static String compactOffer(OfferDto o) {
-    String price = o.getPriceInr() == null ? "" : "₹" + o.getPriceInr();
+    String price = o.getPriceInr() == null ? "" : "Rs " + o.getPriceInr();
     String discount =
         o.getDiscountPercent() == null ? "" : (o.getDiscountPercent() + "% off");
 
@@ -132,4 +133,3 @@ public class OfferStrengthScorer {
     return o.getTitle();
   }
 }
-

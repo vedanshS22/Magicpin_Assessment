@@ -77,7 +77,7 @@ class DecisionEngineServiceTest {
 
     assertThat(s.getConfidenceScore()).isGreaterThanOrEqualTo(65);
     assertThat(s.getTriggerReason()).contains("nearby");
-    assertThat(s.getOfferSelected()).contains("₹299");
+    assertThat(s.getOfferSelected()).contains("Rs 299");
     assertThat(s.getCtaText()).isNotBlank();
     assertThat(s.getEvidence()).containsKeys("nearby_searches_count_today", "offer_price_inr");
   }

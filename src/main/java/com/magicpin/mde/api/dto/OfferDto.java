@@ -1,5 +1,6 @@
 package com.magicpin.mde.api.dto;
 
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,7 +16,7 @@ public class OfferDto {
 
   @PositiveOrZero private Integer priceInr;
   @PositiveOrZero private Integer originalPriceInr;
-  @Min(0) private Integer discountPercent;
+  @Min(0) @Max(100) private Integer discountPercent;
 
   private LocalDate validUntil;
   private String constraints;
